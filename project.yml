@@ -1,0 +1,69 @@
+name: ActorsCue
+
+options:
+  bundleIdPrefix: com.actorscue
+  deploymentTarget:
+    iOS: "17.0"
+  xcodeVersion: "16.0"
+  createIntermediateGroups: true
+
+configs:
+  Debug: debug
+  Release: release
+
+settings:
+  base:
+    SWIFT_VERSION: "5.9"
+    MARKETING_VERSION: "1.0.0"
+    CURRENT_PROJECT_VERSION: "1"
+    DEVELOPMENT_TEAM: ""
+    ALWAYS_SEARCH_USER_PATHS: NO
+
+targets:
+  ActorsCue:
+    type: application
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: ActorsCue
+        excludes:
+          - "Resources/Info.plist"
+          - "**/.DS_Store"
+    info:
+      path: ActorsCue/Resources/Info.plist
+      properties:
+        CFBundleName: "Actor's Cue"
+        CFBundleDisplayName: "Actor's Cue"
+        CFBundleIdentifier: com.actorscue.app
+        CFBundleVersion: "1"
+        CFBundleShortVersionString: "1.0.0"
+        CFBundlePackageType: APPL
+        LSRequiresIPhoneOS: true
+        UIRequiresFullScreen: true
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+        UILaunchScreen: {}
+        NSSpeechRecognitionUsageDescription: "Actor's Cue uses speech recognition to detect when you've finished speaking your line, so the script can auto-advance."
+        NSMicrophoneUsageDescription: "Actor's Cue listens for your voice so it knows when you've delivered your line."
+    entitlements:
+      path: ActorsCue/ActorsCue.entitlements
+      properties:
+        com.apple.developer.speechrecognition: true
+    settings:
+      base:
+        PRODUCT_NAME: ActorsCue
+        PRODUCT_BUNDLE_IDENTIFIER: com.actorscue.app
+        INFOPLIST_FILE: ActorsCue/Resources/Info.plist
+        CODE_SIGN_STYLE: Automatic
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        ENABLE_PREVIEWS: YES
+      configs:
+        Debug:
+          DEBUG_INFORMATION_FORMAT: dwarf-with-dsym
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: DEBUG
+          SWIFT_OPTIMIZATION_LEVEL: "-Onone"
+        Release:
+          DEBUG_INFORMATION_FORMAT: dwarf-with-dsym
+          SWIFT_OPTIMIZATION_LEVEL: "-O"
+          VALIDATE_PRODUCT: YES

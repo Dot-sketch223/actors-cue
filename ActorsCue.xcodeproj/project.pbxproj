@@ -1,0 +1,348 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		02104BFB4F01C8B07CBF8BE7 /* RunSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AE879741AE27138E1F883B /* RunSession.swift */; };
+		03D2C78FB4BDB82A4235DD38 /* RunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6EC4C69768B59670CEC61A3 /* RunView.swift */; };
+		0456E905677587FE2AB5F094 /* Script.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E5DCA05F8A724B9347FE5FE /* Script.swift */; };
+		2E94B0DC55F118D76109F2C3 /* PlainTextParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B5165B196F48DD4D1E6CC1 /* PlainTextParser.swift */; };
+		3156154D690F78AE228CB954 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34EAC7967D7832EEFA45D9FA /* ContentView.swift */; };
+		33AF1FA2E0519D433CB412DC /* RunSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91394C15E80314E94B700E6A /* RunSummaryView.swift */; };
+		54205CB5C42B75DFD610514D /* FountainParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC16C250A144EC1A5AE1212 /* FountainParser.swift */; };
+		60B90FF1F8151C0C631B1993 /* SpeechRecognitionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C1DDFC0131F99DB3EA87DD /* SpeechRecognitionService.swift */; };
+		86BD8D9EDEFFB5A63C3272A6 /* ActorsCueApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B189CBECDE41EFE1B0802369 /* ActorsCueApp.swift */; };
+		A99B0C836F6C609A541551E9 /* Scene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F7B4B3C8C1C2E6CFEE7DF2 /* Scene.swift */; };
+		B46598A389A8273CEE503709 /* CharacterReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99EBFD80A0CF3B4A65BC4D0A /* CharacterReviewView.swift */; };
+		B563CADBD42CE8952DD4ABC4 /* ImportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 705BD40CC19306DCF0184453 /* ImportView.swift */; };
+		C0B379D45616BA459A9586CA /* CueCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD80E3E4310572D7A3C69B2F /* CueCardView.swift */; };
+		D0280B86A73161DF168D47DD /* Line.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687A14D92FC00B12B91B8AD9 /* Line.swift */; };
+		D40FBF4930E6CB477E16963D /* ScriptCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0070194A368E3469D34DFF6 /* ScriptCard.swift */; };
+		E0D28E7A607C41DE37B87C49 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 11218EC76053E79E14EFFEB4 /* Assets.xcassets */; };
+		ED78D62F096D6A20DC3BA6C8 /* ScriptLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C99CCF2C4010E5A5834AC2A /* ScriptLibraryView.swift */; };
+		F04CAC0CC0CFF1F963FC8358 /* PracticeSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D7AFB549DA24CBF5DAA301B /* PracticeSetupView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		11218EC76053E79E14EFFEB4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		12AE879741AE27138E1F883B /* RunSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunSession.swift; sourceTree = "<group>"; };
+		1C99CCF2C4010E5A5834AC2A /* ScriptLibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptLibraryView.swift; sourceTree = "<group>"; };
+		321D168ACA4644D008B9BC07 /* ActorsCue.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ActorsCue.entitlements; sourceTree = "<group>"; };
+		34EAC7967D7832EEFA45D9FA /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		3E5DCA05F8A724B9347FE5FE /* Script.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Script.swift; sourceTree = "<group>"; };
+		4A3D7E242BDF5D90CC04B8E5 /* ActorsCue.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = ActorsCue.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		687A14D92FC00B12B91B8AD9 /* Line.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Line.swift; sourceTree = "<group>"; };
+		705BD40CC19306DCF0184453 /* ImportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportView.swift; sourceTree = "<group>"; };
+		91394C15E80314E94B700E6A /* RunSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunSummaryView.swift; sourceTree = "<group>"; };
+		92F7B4B3C8C1C2E6CFEE7DF2 /* Scene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scene.swift; sourceTree = "<group>"; };
+		99EBFD80A0CF3B4A65BC4D0A /* CharacterReviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterReviewView.swift; sourceTree = "<group>"; };
+		9D7AFB549DA24CBF5DAA301B /* PracticeSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeSetupView.swift; sourceTree = "<group>"; };
+		A7B5165B196F48DD4D1E6CC1 /* PlainTextParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlainTextParser.swift; sourceTree = "<group>"; };
+		AD80E3E4310572D7A3C69B2F /* CueCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CueCardView.swift; sourceTree = "<group>"; };
+		B0070194A368E3469D34DFF6 /* ScriptCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptCard.swift; sourceTree = "<group>"; };
+		B189CBECDE41EFE1B0802369 /* ActorsCueApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActorsCueApp.swift; sourceTree = "<group>"; };
+		CEC16C250A144EC1A5AE1212 /* FountainParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FountainParser.swift; sourceTree = "<group>"; };
+		E6EC4C69768B59670CEC61A3 /* RunView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunView.swift; sourceTree = "<group>"; };
+		E7C1DDFC0131F99DB3EA87DD /* SpeechRecognitionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechRecognitionService.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		0173AFB0E67ED382BFC3876B /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				11218EC76053E79E14EFFEB4 /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		0534DDB75E298301AFDA3827 /* Parsing */ = {
+			isa = PBXGroup;
+			children = (
+				CEC16C250A144EC1A5AE1212 /* FountainParser.swift */,
+				A7B5165B196F48DD4D1E6CC1 /* PlainTextParser.swift */,
+			);
+			path = Parsing;
+			sourceTree = "<group>";
+		};
+		18FE25CC494BB45BD264D352 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				9D3BC742847FADAC140C2843 /* Import */,
+				322F76EBA46651F492CB6C27 /* Library */,
+				32E257888B76769600EFA34D /* Practice */,
+				A005F296BA97FD39A3D69C28 /* Summary */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		322F76EBA46651F492CB6C27 /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				B0070194A368E3469D34DFF6 /* ScriptCard.swift */,
+				1C99CCF2C4010E5A5834AC2A /* ScriptLibraryView.swift */,
+			);
+			path = Library;
+			sourceTree = "<group>";
+		};
+		32E257888B76769600EFA34D /* Practice */ = {
+			isa = PBXGroup;
+			children = (
+				AD80E3E4310572D7A3C69B2F /* CueCardView.swift */,
+				9D7AFB549DA24CBF5DAA301B /* PracticeSetupView.swift */,
+				E6EC4C69768B59670CEC61A3 /* RunView.swift */,
+			);
+			path = Practice;
+			sourceTree = "<group>";
+		};
+		9D3BC742847FADAC140C2843 /* Import */ = {
+			isa = PBXGroup;
+			children = (
+				99EBFD80A0CF3B4A65BC4D0A /* CharacterReviewView.swift */,
+				705BD40CC19306DCF0184453 /* ImportView.swift */,
+			);
+			path = Import;
+			sourceTree = "<group>";
+		};
+		A005F296BA97FD39A3D69C28 /* Summary */ = {
+			isa = PBXGroup;
+			children = (
+				91394C15E80314E94B700E6A /* RunSummaryView.swift */,
+			);
+			path = Summary;
+			sourceTree = "<group>";
+		};
+		B1BC8D150A3EA0DB01B0B820 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				687A14D92FC00B12B91B8AD9 /* Line.swift */,
+				12AE879741AE27138E1F883B /* RunSession.swift */,
+				92F7B4B3C8C1C2E6CFEE7DF2 /* Scene.swift */,
+				3E5DCA05F8A724B9347FE5FE /* Script.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		B7EBFC88613BA003BF4C0A76 = {
+			isa = PBXGroup;
+			children = (
+				FC4491A502ED990837BA12F2 /* ActorsCue */,
+				BB6CD219E36608135707D122 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		BB6CD219E36608135707D122 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4A3D7E242BDF5D90CC04B8E5 /* ActorsCue.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		EC5FEF299A32EED43EF92C1B /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				E7C1DDFC0131F99DB3EA87DD /* SpeechRecognitionService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		FC4491A502ED990837BA12F2 /* ActorsCue */ = {
+			isa = PBXGroup;
+			children = (
+				321D168ACA4644D008B9BC07 /* ActorsCue.entitlements */,
+				B189CBECDE41EFE1B0802369 /* ActorsCueApp.swift */,
+				34EAC7967D7832EEFA45D9FA /* ContentView.swift */,
+				B1BC8D150A3EA0DB01B0B820 /* Models */,
+				0534DDB75E298301AFDA3827 /* Parsing */,
+				0173AFB0E67ED382BFC3876B /* Resources */,
+				EC5FEF299A32EED43EF92C1B /* Services */,
+				18FE25CC494BB45BD264D352 /* Views */,
+			);
+			path = ActorsCue;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		1CBDB832618C0FEB7D2A54CA /* ActorsCue */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7B6146CD510BD82DD924FEEF /* Build configuration list for PBXNativeTarget "ActorsCue" */;
+			buildPhases = (
+				9B0360AF760DC46209781B98 /* Sources */,
+				46E89A00D0DDE90A60920CDD /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ActorsCue;
+			packageProductDependencies = (
+			);
+			productName = ActorsCue;
+			productReference = 4A3D7E242BDF5D90CC04B8E5 /* ActorsCue.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		188D144678BB472628C9F1F1 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					1CBDB832618C0FEB7D2A54CA = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = E153FA1CDC8CD215E34D0FCF /* Build configuration list for PBXProject "ActorsCue" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = B7EBFC88613BA003BF4C0A76;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				1CBDB832618C0FEB7D2A54CA /* ActorsCue */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		46E89A00D0DDE90A60920CDD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E0D28E7A607C41DE37B87C49 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		9B0360AF760DC46209781B98 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				86BD8D9EDEFFB5A63C3272A6 /* ActorsCueApp.swift in Sources */,
+				B46598A389A8273CEE503709 /* CharacterReviewView.swift in Sources */,
+				3156154D690F78AE228CB954 /* ContentView.swift in Sources */,
+				C0B379D45616BA459A9586CA /* CueCardView.swift in Sources */,
+				54205CB5C42B75DFD610514D /* FountainParser.swift in Sources */,
+				B563CADBD42CE8952DD4ABC4 /* ImportView.swift in Sources */,
+				D0280B86A73161DF168D47DD /* Line.swift in Sources */,
+				2E94B0DC55F118D76109F2C3 /* PlainTextParser.swift in Sources */,
+				F04CAC0CC0CFF1F963FC8358 /* PracticeSetupView.swift in Sources */,
+				02104BFB4F01C8B07CBF8BE7 /* RunSession.swift in Sources */,
+				33AF1FA2E0519D433CB412DC /* RunSummaryView.swift in Sources */,
+				03D2C78FB4BDB82A4235DD38 /* RunView.swift in Sources */,
+				A99B0C836F6C609A541551E9 /* Scene.swift in Sources */,
+				0456E905677587FE2AB5F094 /* Script.swift in Sources */,
+				D40FBF4930E6CB477E16963D /* ScriptCard.swift in Sources */,
+				ED78D62F096D6A20DC3BA6C8 /* ScriptLibraryView.swift in Sources */,
+				60B90FF1F8151C0C631B1993 /* SpeechRecognitionService.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		42FACAF109EB368042DA74AF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = ActorsCue/ActorsCue.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = ActorsCue/Resources/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.actorscue.app;
+				PRODUCT_NAME = ActorsCue;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		AD447781C28E78E5A5269392 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0.0;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
+		};
+		CCE40ACA13D0DE81655F6FD1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0.0;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
+		};
+		F212CAF2A6140131376DC8CC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = ActorsCue/ActorsCue.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = ActorsCue/Resources/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.actorscue.app;
+				PRODUCT_NAME = ActorsCue;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		7B6146CD510BD82DD924FEEF /* Build configuration list for PBXNativeTarget "ActorsCue" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F212CAF2A6140131376DC8CC /* Debug */,
+				42FACAF109EB368042DA74AF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		E153FA1CDC8CD215E34D0FCF /* Build configuration list for PBXProject "ActorsCue" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CCE40ACA13D0DE81655F6FD1 /* Debug */,
+				AD447781C28E78E5A5269392 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 188D144678BB472628C9F1F1 /* Project object */;
+}
