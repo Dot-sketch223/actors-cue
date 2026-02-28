@@ -3,7 +3,7 @@ import SwiftData
 
 struct RunView: View {
     let script: Script
-    let scene: Scene?
+    let scene: ScriptScene?
     let trainingWheels: Bool
 
     @Environment(\.modelContext) private var modelContext

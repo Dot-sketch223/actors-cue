@@ -5,7 +5,7 @@ import SwiftData
 final class Script {
     var id: UUID
     var title: String
-    @Relationship(deleteRule: .cascade) var scenes: [Scene]
+    @Relationship(deleteRule: .cascade) var scenes: [ScriptScene]
     var userCharacters: [String]
     var createdAt: Date
     var lastPracticedAt: Date?
@@ -13,7 +13,7 @@ final class Script {
     init(
         id: UUID = UUID(),
         title: String,
-        scenes: [Scene] = [],
+        scenes: [ScriptScene] = [],
         userCharacters: [String] = [],
         createdAt: Date = Date()
     ) {

@@ -31,7 +31,7 @@ struct RunSummaryView: View {
                 VStack(spacing: 8) {
                     Image(systemName: stumbedLineIDs.isEmpty ? "star.fill" : "checkmark.circle.fill")
                         .font(.system(size: 56))
-                        .foregroundStyle(stumbedLineIDs.isEmpty ? .yellow : .tint)
+                        .foregroundStyle(stumbedLineIDs.isEmpty ? Color.yellow : Color.accentColor)
 
                     Text("Run Complete")
                         .font(.largeTitle.bold())

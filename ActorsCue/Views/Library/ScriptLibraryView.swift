@@ -59,5 +59,5 @@ struct ScriptLibraryView: View {
 
 #Preview {
     ScriptLibraryView()
-        .modelContainer(for: [Script.self, Scene.self, Line.self, RunSession.self], inMemory: true)
+        .modelContainer(for: [Script.self, ScriptScene.self, Line.self, RunSession.self], inMemory: true)
 }

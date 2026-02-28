@@ -5,7 +5,7 @@ struct PracticeSetupView: View {
     var script: Script?
 
     @Query(sort: \Script.lastPracticedAt, order: .reverse) private var scripts: [Script]
-    @State private var selectedScene: Scene?
+    @State private var selectedScene: ScriptScene?
     @State private var trainingWheels = true
     @State private var navigateToRun = false
 
@@ -27,7 +27,7 @@ struct PracticeSetupView: View {
 
                     Section("Scene") {
                         Picker("Scene", selection: $selectedScene) {
-                            Text("Full Script").tag(Optional<Scene>.none)
+                            Text("Full Script").tag(Optional<ScriptScene>.none)
                             ForEach(script.scenes.sorted(by: { $0.orderIndex < $1.orderIndex })) { scene in
                                 Text(scene.title).tag(Optional(scene))
                             }
@@ -84,5 +84,5 @@ struct PracticeSetupView: View {
 
 #Preview {
     PracticeSetupView()
-        .modelContainer(for: [Script.self, Scene.self, Line.self], inMemory: true)
+        .modelContainer(for: [Script.self, ScriptScene.self, Line.self], inMemory: true)
 }

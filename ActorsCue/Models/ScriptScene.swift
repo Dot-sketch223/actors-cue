@@ -2,7 +2,7 @@ import Foundation
 import SwiftData
 
 @Model
-final class Scene {
+final class ScriptScene {
     var id: UUID
     var title: String
     var orderIndex: Int

@@ -77,7 +77,7 @@ struct CharacterReviewView: View {
     }
 
     private func saveScript() {
-        let scenes: [Scene] = parseResult.scenes.enumerated().map { (sceneIdx, sceneData) in
+        let scenes: [ScriptScene] = parseResult.scenes.enumerated().map { (sceneIdx, sceneData) in
             let lines: [Line] = sceneData.lines.enumerated().map { (lineIdx, lineData) in
                 Line(
                     character: lineData.character,
@@ -86,7 +86,7 @@ struct CharacterReviewView: View {
                     orderIndex: lineIdx
                 )
             }
-            return Scene(title: sceneData.title, orderIndex: sceneIdx, lines: lines)
+            return ScriptScene(title: sceneData.title, orderIndex: sceneIdx, lines: lines)
         }
 
         let script = Script(

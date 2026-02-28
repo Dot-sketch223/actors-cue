@@ -8,6 +8,6 @@ struct ActorsCueApp: App {
         WindowGroup {
             ContentView()
         }
-        .modelContainer(for: [Script.self, Scene.self, Line.self, RunSession.self])
+        .modelContainer(for: [Script.self, ScriptScene.self, Line.self, RunSession.self])
     }
 }

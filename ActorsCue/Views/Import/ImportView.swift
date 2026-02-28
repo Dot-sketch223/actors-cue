@@ -129,12 +129,15 @@ struct ImportView: View {
 
 enum ScriptFormat { case plainText, fountain }
 
-struct ImportParseResult: Identifiable {
+struct ImportParseResult: Identifiable, Hashable {
     let id = UUID()
     let fileName: String
     let format: ScriptFormat
     let scenes: [ParsedSceneData]
     let detectedCharacters: [String]
+
+    static func == (lhs: ImportParseResult, rhs: ImportParseResult) -> Bool { lhs.id == rhs.id }
+    func hash(into hasher: inout Hasher) { hasher.combine(id) }
 }
 
 struct ParsedSceneData {
