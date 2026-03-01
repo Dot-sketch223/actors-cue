@@ -28,7 +28,7 @@ struct RunView: View {
 
     private var isUserLine: Bool {
         guard let line = currentLine else { return false }
-        return script.userCharacters.contains(line.character)
+        return line.cueType == .spoken && script.userCharacters.contains(line.character)
     }
 
     var body: some View {
@@ -59,18 +59,33 @@ struct RunView: View {
 
                     Spacer()
 
-                    // Other character line display
+                    // Other character's spoken line or stage direction
                     if let line = currentLine, !isUserLine {
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text(line.character)
-                                .font(.caption.uppercaseSmallCaps())
-                                .foregroundStyle(.secondary)
-                            Text(line.text)
-                                .font(.title3)
-                                .multilineTextAlignment(.leading)
+                        if line.cueType == .direction {
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text("Stage Direction")
+                                    .font(.caption.uppercaseSmallCaps())
+                                    .foregroundStyle(.secondary)
+                                Text(line.text)
+                                    .font(.title3)
+                                    .italic()
+                                    .foregroundStyle(.secondary)
+                                    .multilineTextAlignment(.leading)
+                            }
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(24)
+                        } else {
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text(line.character)
+                                    .font(.caption.uppercaseSmallCaps())
+                                    .foregroundStyle(.secondary)
+                                Text(line.text)
+                                    .font(.title3)
+                                    .multilineTextAlignment(.leading)
+                            }
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(24)
                         }
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(24)
 
                         Button {
                             advance()

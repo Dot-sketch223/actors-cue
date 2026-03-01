@@ -98,22 +98,41 @@ final class FountainParserTests: XCTestCase {
         XCTAssertEqual(lines[0].cueType, .spoken)
     }
 
-    // MARK: - Parentheticals
+    // MARK: - Parentheticals captured as stage directions
 
-    func test_parenthetical_skippedWithinDialogue() {
+    func test_parenthetical_capturedAsDirection() {
         let text = "\nHAMLET\n(aside)\nTo be or not to be."
         let lines = parser.parse(text: text).scenes[0].lines
 
-        XCTAssertEqual(lines.count, 1)
-        XCTAssertEqual(lines[0].text, "To be or not to be.")
+        XCTAssertEqual(lines.count, 2)
+        XCTAssertEqual(lines[0].cueType, .direction)
+        XCTAssertEqual(lines[0].text, "(aside)")
+        XCTAssertEqual(lines[0].character, "HAMLET")
+        XCTAssertEqual(lines[1].cueType, .spoken)
+        XCTAssertEqual(lines[1].text, "To be or not to be.")
     }
 
-    func test_parenthetical_doesNotBreakDialogueCollection() {
-        let text = "\nHAMLET\n(quietly)\nSomething is rotten in the state of Denmark."
+    func test_parenthetical_midDialogue_flushesAndResumes() {
+        // Dialogue before and after a parenthetical should become separate spoken lines
+        let text = "\nHAMLET\nTo be or not to be,\n(aside)\nthat is the question."
         let lines = parser.parse(text: text).scenes[0].lines
 
-        XCTAssertEqual(lines.count, 1)
-        XCTAssertEqual(lines[0].character, "HAMLET")
+        XCTAssertEqual(lines.count, 3)
+        XCTAssertEqual(lines[0].cueType, .spoken)
+        XCTAssertEqual(lines[0].text, "To be or not to be,")
+        XCTAssertEqual(lines[1].cueType, .direction)
+        XCTAssertEqual(lines[1].text, "(aside)")
+        XCTAssertEqual(lines[2].cueType, .spoken)
+        XCTAssertEqual(lines[2].text, "that is the question.")
+    }
+
+    func test_parenthetical_notInDetectedCharacters() {
+        // Parenthetical direction lines must not add their character to detectedCharacters
+        // (spoken lines still do)
+        let text = "\nHAMLET\n(aside)\nTo be or not to be."
+        let result = parser.parse(text: text)
+
+        XCTAssertEqual(result.detectedCharacters, ["HAMLET"])
     }
 
     // MARK: - Dialogue collection
@@ -165,5 +184,43 @@ final class FountainParserTests: XCTestCase {
         let result = parser.parse(text: text)
 
         XCTAssertTrue(result.scenes.isEmpty)
+    }
+
+    // MARK: - Action lines (stage directions outside dialogue blocks)
+
+    func test_actionLine_capturedAsDirection() {
+        let text = "The ghost of Hamlet's father appears.\n\nHAMLET\nO, speak!"
+        let lines = parser.parse(text: text).scenes[0].lines
+
+        XCTAssertEqual(lines[0].cueType, .direction)
+        XCTAssertEqual(lines[0].text, "The ghost of Hamlet's father appears.")
+        XCTAssertEqual(lines[0].character, "")
+    }
+
+    func test_actionLine_emptyCharacter() {
+        let text = "Lights fade to black."
+        let lines = parser.parse(text: text).scenes[0].lines
+
+        XCTAssertEqual(lines.count, 1)
+        XCTAssertEqual(lines[0].character, "")
+        XCTAssertEqual(lines[0].cueType, .direction)
+    }
+
+    func test_actionLine_notInDetectedCharacters() {
+        let text = "Lights fade.\n\nHAMLET\nTo be."
+        let result = parser.parse(text: text)
+
+        XCTAssertEqual(result.detectedCharacters, ["HAMLET"])
+    }
+
+    func test_actionLine_appearsInSceneBetweenDialogue() {
+        let text = "\nHAMLET\nTo be.\n\nA long pause.\n\nOPHELIA\nMy lord."
+        let lines = parser.parse(text: text).scenes[0].lines
+
+        XCTAssertEqual(lines.count, 3)
+        XCTAssertEqual(lines[0].cueType, .spoken)
+        XCTAssertEqual(lines[1].cueType, .direction)
+        XCTAssertEqual(lines[1].text, "A long pause.")
+        XCTAssertEqual(lines[2].cueType, .spoken)
     }
 }

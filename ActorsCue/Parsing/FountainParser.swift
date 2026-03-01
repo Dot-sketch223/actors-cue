@@ -25,7 +25,7 @@ struct FountainParser {
         var scenes: [ParsedScene] = []
         var currentSceneTitle = "Scene 1"
         var currentLines: [ParsedLine] = []
-        var parsedLines: [ParsedLine] = []
+        var spokenLines: [ParsedLine] = []  // used only for detectedCharacters
 
         var i = 0
         while i < rawLines.count {
@@ -43,38 +43,52 @@ struct FountainParser {
                 continue
             }
 
+            // Skip blank lines
+            if trimmed.isEmpty {
+                i += 1
+                continue
+            }
+
             // Character cue: ALL CAPS, may end with ^ for dual-dialogue, preceded by blank line
             if isCharacterCue(trimmed, previousLine: i > 0 ? rawLines[i - 1] : "") {
                 let character = trimmed
                     .replacingOccurrences(of: "^", with: "")
                     .trimmingCharacters(in: .whitespaces)
 
-                // Collect dialogue lines that follow (non-empty, non-parenthetical-only)
                 i += 1
                 var dialogueParts: [String] = []
+
                 while i < rawLines.count {
                     let next = rawLines[i].trimmingCharacters(in: .whitespaces)
                     if next.isEmpty { break }
-                    // Parentheticals stay with the character but are stage directions
+
                     if next.hasPrefix("(") && next.hasSuffix(")") {
+                        // Flush any accumulated dialogue before emitting the parenthetical
+                        if !dialogueParts.isEmpty {
+                            let spoken = ParsedLine(character: character, text: dialogueParts.joined(separator: " "), cueType: .spoken)
+                            currentLines.append(spoken)
+                            spokenLines.append(spoken)
+                            dialogueParts = []
+                        }
+                        currentLines.append(ParsedLine(character: character, text: next, cueType: .direction))
                         i += 1
                         continue
                     }
+
                     dialogueParts.append(next)
                     i += 1
                 }
+
                 if !dialogueParts.isEmpty {
-                    let line = ParsedLine(
-                        character: character,
-                        text: dialogueParts.joined(separator: " "),
-                        cueType: .spoken
-                    )
-                    currentLines.append(line)
-                    parsedLines.append(line)
+                    let spoken = ParsedLine(character: character, text: dialogueParts.joined(separator: " "), cueType: .spoken)
+                    currentLines.append(spoken)
+                    spokenLines.append(spoken)
                 }
                 continue
             }
 
+            // Action line — a stage direction outside any dialogue block
+            currentLines.append(ParsedLine(character: "", text: trimmed, cueType: .direction))
             i += 1
         }
 
@@ -82,12 +96,11 @@ struct FountainParser {
             scenes.append(ParsedScene(title: currentSceneTitle, lines: currentLines))
         }
 
-        // If no scene headings were found, put everything in one scene
-        if scenes.isEmpty && !parsedLines.isEmpty {
-            scenes = [ParsedScene(title: "Scene 1", lines: parsedLines)]
+        if scenes.isEmpty && !spokenLines.isEmpty {
+            scenes = [ParsedScene(title: "Scene 1", lines: spokenLines)]
         }
 
-        let characters = Array(Set(parsedLines.map(\.character))).sorted()
+        let characters = Array(Set(spokenLines.map(\.character)).filter { !$0.isEmpty }).sorted()
         return ParseResult(scenes: scenes, detectedCharacters: characters)
     }
 
