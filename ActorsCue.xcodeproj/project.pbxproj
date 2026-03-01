@@ -25,6 +25,8 @@
 		E0D28E7A607C41DE37B87C49 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 11218EC76053E79E14EFFEB4 /* Assets.xcassets */; };
 		ED78D62F096D6A20DC3BA6C8 /* ScriptLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C99CCF2C4010E5A5834AC2A /* ScriptLibraryView.swift */; };
 		F04CAC0CC0CFF1F963FC8358 /* PracticeSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D7AFB549DA24CBF5DAA301B /* PracticeSetupView.swift */; };
+		A1B2C3D4E5F6A7B8C9D0E1F2 /* EditCharactersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6A7B8C9D0E1F3 /* EditCharactersView.swift */; };
+		A1B2C3D4E5F6A7B8C9D0E1F4 /* AssignRoleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6A7B8C9D0E1F5 /* AssignRoleView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +46,8 @@
 		A7B5165B196F48DD4D1E6CC1 /* PlainTextParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlainTextParser.swift; sourceTree = "<group>"; };
 		AD80E3E4310572D7A3C69B2F /* CueCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CueCardView.swift; sourceTree = "<group>"; };
 		B0070194A368E3469D34DFF6 /* ScriptCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptCard.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F6A7B8C9D0E1F3 /* EditCharactersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCharactersView.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F6A7B8C9D0E1F5 /* AssignRoleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignRoleView.swift; sourceTree = "<group>"; };
 		B189CBECDE41EFE1B0802369 /* ActorsCueApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActorsCueApp.swift; sourceTree = "<group>"; };
 		CEC16C250A144EC1A5AE1212 /* FountainParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FountainParser.swift; sourceTree = "<group>"; };
 		E6EC4C69768B59670CEC61A3 /* RunView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunView.swift; sourceTree = "<group>"; };
@@ -82,6 +86,8 @@
 		322F76EBA46651F492CB6C27 /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				A1B2C3D4E5F6A7B8C9D0E1F5 /* AssignRoleView.swift */,
+				A1B2C3D4E5F6A7B8C9D0E1F3 /* EditCharactersView.swift */,
 				B0070194A368E3469D34DFF6 /* ScriptCard.swift */,
 				1C99CCF2C4010E5A5834AC2A /* ScriptLibraryView.swift */,
 			);
@@ -237,7 +243,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				86BD8D9EDEFFB5A63C3272A6 /* ActorsCueApp.swift in Sources */,
+				A1B2C3D4E5F6A7B8C9D0E1F4 /* AssignRoleView.swift in Sources */,
 				B46598A389A8273CEE503709 /* CharacterReviewView.swift in Sources */,
+				A1B2C3D4E5F6A7B8C9D0E1F2 /* EditCharactersView.swift in Sources */,
 				3156154D690F78AE228CB954 /* ContentView.swift in Sources */,
 				C0B379D45616BA459A9586CA /* CueCardView.swift in Sources */,
 				54205CB5C42B75DFD610514D /* FountainParser.swift in Sources */,
