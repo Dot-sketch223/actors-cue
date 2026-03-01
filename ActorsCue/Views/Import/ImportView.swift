@@ -1,5 +1,6 @@
 import SwiftUI
 import UniformTypeIdentifiers
+import PDFKit
 
 struct ImportView: View {
     @Environment(\.dismiss) private var dismiss
@@ -27,7 +28,7 @@ struct ImportView: View {
                 VStack(spacing: 8) {
                     Text("Import a Script")
                         .font(.title2.bold())
-                    Text("Choose a plain text (.txt) or Fountain (.fountain) file from your Files app.")
+                    Text("Choose a plain text (.txt), Fountain (.fountain), or PDF file from your Files app.")
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                         .multilineTextAlignment(.center)
@@ -62,7 +63,7 @@ struct ImportView: View {
             }
             .fileImporter(
                 isPresented: $showingFilePicker,
-                allowedContentTypes: [.plainText, UTType(filenameExtension: "fountain") ?? .text],
+                allowedContentTypes: [.plainText, .pdf, UTType(filenameExtension: "fountain") ?? .text],
                 allowsMultipleSelection: false
             ) { result in
                 handleFileImport(result)
@@ -99,44 +100,71 @@ struct ImportView: View {
 
     private func processURL(_ url: URL) {
         parseError = nil
-        do {
-            let text = try String(contentsOf: url, encoding: .utf8)
-            let ext = url.pathExtension.lowercased()
-            let fileName = url.deletingPathExtension().lastPathComponent
+        let ext = url.pathExtension.lowercased()
+        let fileName = url.deletingPathExtension().lastPathComponent
 
-            if ext == "fountain" {
-                let result = FountainParser().parse(text: text)
-                parsedResult = ImportParseResult(
-                    fileName: fileName,
-                    format: .fountain,
-                    scenes: result.scenes.map { s in
-                        ParsedSceneData(title: s.title, lines: s.lines.map {
-                            ParsedLineData(character: $0.character, text: $0.text, cueType: $0.cueType)
-                        })
-                    },
-                    detectedCharacters: result.detectedCharacters
-                )
-            } else {
-                let result = PlainTextParser().parse(text: text)
-                parsedResult = ImportParseResult(
-                    fileName: fileName,
-                    format: .plainText,
-                    scenes: result.scenes.map { s in
-                        ParsedSceneData(title: s.title, lines: s.lines.map {
-                            ParsedLineData(character: $0.character, text: $0.text, cueType: $0.cueType)
-                        })
-                    },
-                    detectedCharacters: result.detectedCharacters
-                )
+        let text: String
+        if ext == "pdf" {
+            guard let extracted = extractPDFText(from: url) else {
+                parseError = "Could not extract text from PDF."
+                return
             }
-
-            if parsedResult?.detectedCharacters.isEmpty == true {
-                parseError = "No characters detected. Make sure character names are in ALL CAPS."
-                parsedResult = nil
+            text = extracted
+        } else {
+            do {
+                text = try String(contentsOf: url, encoding: .utf8)
+            } catch {
+                parseError = "Could not read file: \(error.localizedDescription)"
+                return
             }
-        } catch {
-            parseError = "Could not read file: \(error.localizedDescription)"
         }
+
+        let format: ScriptFormat = (ext == "fountain" || (ext == "pdf" && looksLikeFountain(text)))
+            ? .fountain : .plainText
+
+        if format == .fountain {
+            let result = FountainParser().parse(text: text)
+            parsedResult = ImportParseResult(
+                fileName: fileName,
+                format: .fountain,
+                scenes: result.scenes.map { s in
+                    ParsedSceneData(title: s.title, lines: s.lines.map {
+                        ParsedLineData(character: $0.character, text: $0.text, cueType: $0.cueType)
+                    })
+                },
+                detectedCharacters: result.detectedCharacters
+            )
+        } else {
+            let result = PlainTextParser().parse(text: text)
+            parsedResult = ImportParseResult(
+                fileName: fileName,
+                format: .plainText,
+                scenes: result.scenes.map { s in
+                    ParsedSceneData(title: s.title, lines: s.lines.map {
+                        ParsedLineData(character: $0.character, text: $0.text, cueType: $0.cueType)
+                    })
+                },
+                detectedCharacters: result.detectedCharacters
+            )
+        }
+
+        if parsedResult?.detectedCharacters.isEmpty == true {
+            parseError = "No characters detected. Make sure character names are in ALL CAPS."
+            parsedResult = nil
+        }
+    }
+
+    private func extractPDFText(from url: URL) -> String? {
+        guard let document = PDFDocument(url: url) else { return nil }
+        return document.string
+    }
+
+    /// Returns true if the text looks like a Fountain screenplay
+    /// (contains standard scene-heading prefixes).
+    private func looksLikeFountain(_ text: String) -> Bool {
+        let upper = text.uppercased()
+        return upper.contains("\nINT.") || upper.contains("\nEXT.")
+            || upper.contains("\nINT/EXT") || upper.contains("\nI/E.")
     }
 }
 

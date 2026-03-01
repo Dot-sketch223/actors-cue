@@ -68,6 +68,11 @@ targets:
             LSHandlerRank: Owner
             LSItemContentTypes:
               - com.actorscue.fountain
+          - CFBundleTypeName: "PDF Script"
+            CFBundleTypeRole: Viewer
+            LSHandlerRank: Alternate
+            LSItemContentTypes:
+              - com.adobe.pdf
         UTImportedTypeDeclarations:
           - UTTypeIdentifier: com.actorscue.fountain
             UTTypeDescription: "Fountain Screenplay"
