@@ -8,6 +8,7 @@ struct PracticeSetupView: View {
     @State private var selectedScene: ScriptScene?
     @State private var trainingWheels = true
     @State private var navigateToRun = false
+    @State private var showingRolePicker = false
 
     private var activeScript: Script? { script ?? scripts.first }
 
@@ -18,10 +19,22 @@ struct PracticeSetupView: View {
                     Section("Script") {
                         Text(script.title)
                             .font(.headline)
-                        if !script.userCharacters.isEmpty {
-                            Text("Playing: \(script.userCharacters.joined(separator: ", "))")
-                                .font(.subheadline)
-                                .foregroundStyle(.secondary)
+                        Button {
+                            showingRolePicker = true
+                        } label: {
+                            if script.userCharacters.isEmpty {
+                                Label("Assign your role", systemImage: "person.badge.plus")
+                            } else {
+                                HStack {
+                                    Text("Playing: \(script.userCharacters.joined(separator: ", "))")
+                                        .font(.subheadline)
+                                        .foregroundStyle(.secondary)
+                                    Spacer()
+                                    Image(systemName: "chevron.right")
+                                        .font(.caption)
+                                        .foregroundStyle(.tertiary)
+                                }
+                            }
                         }
                     }
 
@@ -54,15 +67,11 @@ struct PracticeSetupView: View {
                         .disabled(script.userCharacters.isEmpty)
                     }
 
-                    if script.userCharacters.isEmpty {
-                        Section {
-                            Text("Open the script and assign your role before practicing.")
-                                .foregroundStyle(.secondary)
-                                .font(.caption)
-                        }
-                    }
                 }
                 .navigationTitle("Practice Setup")
+                .sheet(isPresented: $showingRolePicker) {
+                    AssignRoleView(script: script)
+                }
                 .navigationDestination(isPresented: $navigateToRun) {
                     RunView(
                         script: script,
