@@ -172,4 +172,54 @@ final class PlainTextParserTests: XCTestCase {
         let result = parser.parse(text: "This is just some plain text with no dialogue.")
         XCTAssertTrue(result.detectedCharacters.isEmpty)
     }
+
+    // MARK: - Colon format edge cases
+
+    func test_colonFormat_dialogueContainsColon() {
+        // Only the first ": " is used as the character/dialogue separator
+        let result = parser.parse(text: "HAMLET: He said: goodbye.")
+        let lines = result.scenes[0].lines
+
+        XCTAssertEqual(lines.count, 1)
+        XCTAssertEqual(lines[0].character, "HAMLET")
+        XCTAssertEqual(lines[0].text, "He said: goodbye.")
+    }
+
+    func test_colonFormat_noSpaceAfterColon_notParsed() {
+        // The parser requires a space after the colon ("CHARACTER: text"), so
+        // "CHARACTER:text" (no space) is not treated as a dialogue line
+        let result = parser.parse(text: "HAMLET:To be or not to be.")
+        XCTAssertTrue(result.scenes[0].lines.isEmpty)
+    }
+
+    func test_characterName_withPeriod_detected() {
+        // Names containing periods (e.g. titles) should be recognised
+        let result = parser.parse(text: "DR. SMITH: Good morning.")
+        let lines = result.scenes[0].lines
+
+        XCTAssertEqual(lines.count, 1)
+        XCTAssertEqual(lines[0].character, "DR. SMITH")
+        XCTAssertEqual(lines[0].text, "Good morning.")
+    }
+
+    // MARK: - Separate-line format edge cases
+
+    func test_separateFormat_stageDirectionBetweenBlocks_skipped() {
+        // A parenthetical between two character blocks is not collected as dialogue
+        let text = "HAMLET\nTo be.\n\n(He pauses dramatically)\n\nOPHELIA\nMy lord."
+        let lines = parser.parse(text: text).scenes[0].lines
+
+        XCTAssertEqual(lines.count, 2)
+        XCTAssertEqual(lines[0].character, "HAMLET")
+        XCTAssertEqual(lines[1].character, "OPHELIA")
+    }
+
+    func test_separateFormat_internalParens_notFiltered() {
+        // Parentheses inside a dialogue line are kept — only standalone paren-only lines are directions
+        let text = "HAMLET\nI think (perhaps) so."
+        let lines = parser.parse(text: text).scenes[0].lines
+
+        XCTAssertEqual(lines.count, 1)
+        XCTAssertEqual(lines[0].text, "I think (perhaps) so.")
+    }
 }

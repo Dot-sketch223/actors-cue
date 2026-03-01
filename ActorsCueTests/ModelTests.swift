@@ -162,4 +162,52 @@ final class ModelTests: XCTestCase {
 
         XCTAssertEqual(line.character, "HAMLET")
     }
+
+    func test_renameCharacter_sameNameIsNoOp() throws {
+        let line = Line(character: "HAMLET", text: "To be.", cueType: .spoken, orderIndex: 0)
+        context.insert(line)
+        let scene = ScriptScene(title: "Scene 1", orderIndex: 0, lines: [line])
+        context.insert(scene)
+        let script = Script(title: "Test", scenes: [scene])
+        context.insert(script)
+        try context.save()
+
+        script.renameCharacter(from: "HAMLET", to: "HAMLET")
+
+        XCTAssertEqual(line.character, "HAMLET")
+    }
+
+    func test_renameCharacter_acrossMultipleScenes() throws {
+        let line1 = Line(character: "Ham.", text: "First.", cueType: .spoken, orderIndex: 0)
+        let line2 = Line(character: "Ham.", text: "Second.", cueType: .spoken, orderIndex: 0)
+        context.insert(line1); context.insert(line2)
+        let scene1 = ScriptScene(title: "Scene 1", orderIndex: 0, lines: [line1])
+        let scene2 = ScriptScene(title: "Scene 2", orderIndex: 1, lines: [line2])
+        context.insert(scene1); context.insert(scene2)
+        let script = Script(title: "Test", scenes: [scene1, scene2])
+        context.insert(script)
+        try context.save()
+
+        script.renameCharacter(from: "Ham.", to: "HAMLET")
+
+        XCTAssertEqual(line1.character, "HAMLET")
+        XCTAssertEqual(line2.character, "HAMLET")
+    }
+
+    func test_renameCharacter_onlyExactMatches() throws {
+        // "HAMLET" rename should not touch a character named "HAMLETED"
+        let line1 = Line(character: "HAMLET", text: "To be.", cueType: .spoken, orderIndex: 0)
+        let line2 = Line(character: "HAMLETED", text: "Or not.", cueType: .spoken, orderIndex: 1)
+        context.insert(line1); context.insert(line2)
+        let scene = ScriptScene(title: "Scene 1", orderIndex: 0, lines: [line1, line2])
+        context.insert(scene)
+        let script = Script(title: "Test", scenes: [scene])
+        context.insert(script)
+        try context.save()
+
+        script.renameCharacter(from: "HAMLET", to: "PRINCE")
+
+        XCTAssertEqual(line1.character, "PRINCE")
+        XCTAssertEqual(line2.character, "HAMLETED")
+    }
 }

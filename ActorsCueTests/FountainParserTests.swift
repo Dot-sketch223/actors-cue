@@ -223,4 +223,43 @@ final class FountainParserTests: XCTestCase {
         XCTAssertEqual(lines[1].text, "A long pause.")
         XCTAssertEqual(lines[2].cueType, .spoken)
     }
+
+    // MARK: - Character extensions
+
+    func test_characterExtension_VO_recognized() {
+        // Fountain allows extensions like (V.O.) and (CONT'D) after the character name
+        let text = "\nHAMLET (V.O.)\nTo be or not to be."
+        let lines = parser.parse(text: text).scenes[0].lines
+
+        XCTAssertEqual(lines.count, 1)
+        XCTAssertEqual(lines[0].cueType, .spoken)
+        XCTAssertEqual(lines[0].text, "To be or not to be.")
+    }
+
+    // MARK: - Scene heading variants
+
+    func test_ieVariant_detected() {
+        let text = "I/E. MOVING CAR - DAY\n\nDRIVER\nWhere are we?"
+        let result = parser.parse(text: text)
+
+        XCTAssertEqual(result.scenes[0].title, "I/E. MOVING CAR - DAY")
+    }
+
+    func test_doubleDotPrefix_notASceneHeading() {
+        // ".." is NOT a forced scene heading — the spec requires exactly one leading dot
+        let text = "..this is a note\n\nHAMLET\nTo be."
+        let lines = parser.parse(text: text).scenes[0].lines
+
+        XCTAssertEqual(lines[0].cueType, .direction)
+        XCTAssertEqual(lines[0].text, "..this is a note")
+    }
+
+    func test_sceneWithOnlyActionLines_isIncluded() {
+        // A scene that has action lines but no dialogue is still included
+        let text = "INT. EMPTY STAGE - NIGHT\n\nThe stage is bare. Silence."
+        let result = parser.parse(text: text)
+
+        XCTAssertEqual(result.scenes.count, 1)
+        XCTAssertEqual(result.scenes[0].lines[0].cueType, .direction)
+    }
 }
