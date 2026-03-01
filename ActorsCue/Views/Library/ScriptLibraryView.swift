@@ -3,7 +3,7 @@ import SwiftData
 
 struct ScriptLibraryView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query(sort: \Script.createdAt, order: .reverse) private var scripts: [Script]
+    @Query(sort: \Script.lastPracticedAt, order: .reverse) private var scripts: [Script]
 
     @State private var showingImport = false
     @State private var scriptToEditCharacters: Script?
