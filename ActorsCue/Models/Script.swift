@@ -24,7 +24,7 @@ final class Script {
         self.createdAt = createdAt
     }
 
-    /// All unique character names across all scenes.
+    /// All unique character names across all scenes, in order of first appearance.
     var allCharacters: [String] {
         var seen = Set<String>()
         return scenes
@@ -33,5 +33,27 @@ final class Script {
                 guard !line.character.isEmpty, seen.insert(line.character).inserted else { return nil }
                 return line.character
             }
+    }
+
+    /// Renames every line whose character matches `oldName` to `newName`,
+    /// and updates `userCharacters` accordingly.
+    /// If `newName` already exists the two characters are merged.
+    func renameCharacter(from oldName: String, to newName: String) {
+        let trimmed = newName.trimmingCharacters(in: .whitespaces)
+        guard !trimmed.isEmpty, trimmed != oldName else { return }
+
+        for scene in scenes {
+            for line in scene.lines where line.character == oldName {
+                line.character = trimmed
+            }
+        }
+
+        if let idx = userCharacters.firstIndex(of: oldName) {
+            if userCharacters.contains(trimmed) {
+                userCharacters.remove(at: idx)
+            } else {
+                userCharacters[idx] = trimmed
+            }
+        }
     }
 }

@@ -85,4 +85,81 @@ final class ModelTests: XCTestCase {
 
         XCTAssertTrue(script.allCharacters.isEmpty)
     }
+
+    // MARK: - Script.renameCharacter
+
+    func test_renameCharacter_updatesAllMatchingLines() throws {
+        let line1 = Line(character: "Ham.", text: "To be.", cueType: .spoken, orderIndex: 0)
+        let line2 = Line(character: "Ham.", text: "Or not.", cueType: .spoken, orderIndex: 1)
+        context.insert(line1); context.insert(line2)
+        let scene = ScriptScene(title: "Scene 1", orderIndex: 0, lines: [line1, line2])
+        context.insert(scene)
+        let script = Script(title: "Test", scenes: [scene])
+        context.insert(script)
+        try context.save()
+
+        script.renameCharacter(from: "Ham.", to: "HAMLET")
+
+        XCTAssertEqual(line1.character, "HAMLET")
+        XCTAssertEqual(line2.character, "HAMLET")
+    }
+
+    func test_renameCharacter_updatesUserCharacters() throws {
+        let line = Line(character: "Ham.", text: "To be.", cueType: .spoken, orderIndex: 0)
+        context.insert(line)
+        let scene = ScriptScene(title: "Scene 1", orderIndex: 0, lines: [line])
+        context.insert(scene)
+        let script = Script(title: "Test", scenes: [scene], userCharacters: ["Ham."])
+        context.insert(script)
+        try context.save()
+
+        script.renameCharacter(from: "Ham.", to: "HAMLET")
+
+        XCTAssertEqual(script.userCharacters, ["HAMLET"])
+    }
+
+    func test_renameCharacter_mergesIntoExistingCharacter() throws {
+        let line1 = Line(character: "Ham.", text: "To be.", cueType: .spoken, orderIndex: 0)
+        let line2 = Line(character: "HAMLET", text: "Or not.", cueType: .spoken, orderIndex: 1)
+        context.insert(line1); context.insert(line2)
+        let scene = ScriptScene(title: "Scene 1", orderIndex: 0, lines: [line1, line2])
+        context.insert(scene)
+        let script = Script(title: "Test", scenes: [scene])
+        context.insert(script)
+        try context.save()
+
+        script.renameCharacter(from: "Ham.", to: "HAMLET")
+
+        XCTAssertEqual(Set(script.allCharacters), Set(["HAMLET"]))
+        XCTAssertEqual(line1.character, "HAMLET")
+    }
+
+    func test_renameCharacter_merge_removesOldFromUserCharacters() throws {
+        let line1 = Line(character: "Ham.", text: "To be.", cueType: .spoken, orderIndex: 0)
+        let line2 = Line(character: "HAMLET", text: "Or not.", cueType: .spoken, orderIndex: 1)
+        context.insert(line1); context.insert(line2)
+        let scene = ScriptScene(title: "Scene 1", orderIndex: 0, lines: [line1, line2])
+        context.insert(scene)
+        let script = Script(title: "Test", scenes: [scene], userCharacters: ["Ham.", "HAMLET"])
+        context.insert(script)
+        try context.save()
+
+        script.renameCharacter(from: "Ham.", to: "HAMLET")
+
+        XCTAssertEqual(script.userCharacters, ["HAMLET"])
+    }
+
+    func test_renameCharacter_emptyNewName_isNoOp() throws {
+        let line = Line(character: "HAMLET", text: "To be.", cueType: .spoken, orderIndex: 0)
+        context.insert(line)
+        let scene = ScriptScene(title: "Scene 1", orderIndex: 0, lines: [line])
+        context.insert(scene)
+        let script = Script(title: "Test", scenes: [scene])
+        context.insert(script)
+        try context.save()
+
+        script.renameCharacter(from: "HAMLET", to: "")
+
+        XCTAssertEqual(line.character, "HAMLET")
+    }
 }

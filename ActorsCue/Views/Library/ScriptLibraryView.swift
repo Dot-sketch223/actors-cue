@@ -6,6 +6,7 @@ struct ScriptLibraryView: View {
     @Query(sort: \Script.createdAt, order: .reverse) private var scripts: [Script]
 
     @State private var showingImport = false
+    @State private var scriptToEditCharacters: Script?
 
     var body: some View {
         NavigationStack {
@@ -23,6 +24,14 @@ struct ScriptLibraryView: View {
                                 PracticeSetupView(script: script)
                             } label: {
                                 ScriptCard(script: script)
+                            }
+                            .swipeActions(edge: .leading) {
+                                Button {
+                                    scriptToEditCharacters = script
+                                } label: {
+                                    Label("Edit Characters", systemImage: "person.crop.circle.badge.pencil")
+                                }
+                                .tint(.blue)
                             }
                         }
                         .onDelete(perform: deleteScripts)
@@ -46,6 +55,9 @@ struct ScriptLibraryView: View {
             }
             .sheet(isPresented: $showingImport) {
                 ImportView()
+            }
+            .sheet(item: $scriptToEditCharacters) { script in
+                EditCharactersView(script: script)
             }
         }
     }
