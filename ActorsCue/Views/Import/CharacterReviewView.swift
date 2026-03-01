@@ -10,6 +10,9 @@ struct CharacterReviewView: View {
     @State private var selectedRoles: Set<String> = []
     @State private var scriptTitle: String
 
+    private var allLines: [ParsedLineData] { parseResult.scenes.flatMap(\.lines) }
+    private let previewLimit = 30
+
     init(parseResult: ImportParseResult, onSave: @escaping (Script) -> Void) {
         self.parseResult = parseResult
         self.onSave = onSave
@@ -53,6 +56,28 @@ struct CharacterReviewView: View {
                         Label(role, systemImage: "person.fill")
                     }
                 }
+            }
+
+            Section {
+                ForEach(Array(allLines.prefix(previewLimit).enumerated()), id: \.offset) { _, line in
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(line.character)
+                            .font(.caption.bold())
+                            .foregroundStyle(.secondary)
+                        Text(line.text)
+                            .font(.caption)
+                    }
+                    .padding(.vertical, 2)
+                }
+                if allLines.count > previewLimit {
+                    Text("… and \(allLines.count - previewLimit) more lines")
+                        .font(.caption)
+                        .foregroundStyle(.tertiary)
+                }
+            } header: {
+                Text("Script Preview")
+            } footer: {
+                Text("\(allLines.count) lines total")
             }
         }
         .navigationTitle("Review Characters")

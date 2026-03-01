@@ -20,6 +20,18 @@ settings:
     ALWAYS_SEARCH_USER_PATHS: NO
 
 targets:
+  ActorsCueTests:
+    type: bundle.unit-test
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: ActorsCueTests
+    dependencies:
+      - target: ActorsCue
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.actorscue.app.tests
+
   ActorsCue:
     type: application
     platform: iOS
@@ -45,6 +57,25 @@ targets:
         UILaunchScreen: {}
         NSSpeechRecognitionUsageDescription: "Actor's Cue uses speech recognition to detect when you've finished speaking your line, so the script can auto-advance."
         NSMicrophoneUsageDescription: "Actor's Cue listens for your voice so it knows when you've delivered your line."
+        CFBundleDocumentTypes:
+          - CFBundleTypeName: "Plain Text Script"
+            CFBundleTypeRole: Viewer
+            LSHandlerRank: Alternate
+            LSItemContentTypes:
+              - public.plain-text
+          - CFBundleTypeName: "Fountain Screenplay"
+            CFBundleTypeRole: Viewer
+            LSHandlerRank: Owner
+            LSItemContentTypes:
+              - com.actorscue.fountain
+        UTImportedTypeDeclarations:
+          - UTTypeIdentifier: com.actorscue.fountain
+            UTTypeDescription: "Fountain Screenplay"
+            UTTypeConformsTo:
+              - public.text
+            UTTypeTagSpecification:
+              "public.filename-extension":
+                - fountain
     entitlements:
       path: ActorsCue/ActorsCue.entitlements
       properties:

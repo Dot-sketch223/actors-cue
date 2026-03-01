@@ -5,6 +5,12 @@ struct ImportView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
 
+    let initialURL: URL?
+
+    init(initialURL: URL? = nil) {
+        self.initialURL = initialURL
+    }
+
     @State private var showingFilePicker = false
     @State private var parseError: String?
     @State private var parsedResult: ImportParseResult?
@@ -61,6 +67,11 @@ struct ImportView: View {
             ) { result in
                 handleFileImport(result)
             }
+            .onAppear {
+                if let url = initialURL {
+                    processURL(url)
+                }
+            }
             .navigationDestination(item: $parsedResult) { result in
                 CharacterReviewView(parseResult: result, onSave: { script in
                     modelContext.insert(script)
@@ -82,45 +93,49 @@ struct ImportView: View {
                 return
             }
             defer { url.stopAccessingSecurityScopedResource() }
+            processURL(url)
+        }
+    }
 
-            do {
-                let text = try String(contentsOf: url, encoding: .utf8)
-                let ext = url.pathExtension.lowercased()
-                let fileName = url.deletingPathExtension().lastPathComponent
+    private func processURL(_ url: URL) {
+        parseError = nil
+        do {
+            let text = try String(contentsOf: url, encoding: .utf8)
+            let ext = url.pathExtension.lowercased()
+            let fileName = url.deletingPathExtension().lastPathComponent
 
-                if ext == "fountain" {
-                    let result = FountainParser().parse(text: text)
-                    parsedResult = ImportParseResult(
-                        fileName: fileName,
-                        format: .fountain,
-                        scenes: result.scenes.map { s in
-                            ParsedSceneData(title: s.title, lines: s.lines.map {
-                                ParsedLineData(character: $0.character, text: $0.text, cueType: $0.cueType)
-                            })
-                        },
-                        detectedCharacters: result.detectedCharacters
-                    )
-                } else {
-                    let result = PlainTextParser().parse(text: text)
-                    parsedResult = ImportParseResult(
-                        fileName: fileName,
-                        format: .plainText,
-                        scenes: result.scenes.map { s in
-                            ParsedSceneData(title: s.title, lines: s.lines.map {
-                                ParsedLineData(character: $0.character, text: $0.text, cueType: $0.cueType)
-                            })
-                        },
-                        detectedCharacters: result.detectedCharacters
-                    )
-                }
-
-                if parsedResult?.detectedCharacters.isEmpty == true {
-                    parseError = "No characters detected. Make sure character names are in ALL CAPS."
-                    parsedResult = nil
-                }
-            } catch {
-                parseError = "Could not read file: \(error.localizedDescription)"
+            if ext == "fountain" {
+                let result = FountainParser().parse(text: text)
+                parsedResult = ImportParseResult(
+                    fileName: fileName,
+                    format: .fountain,
+                    scenes: result.scenes.map { s in
+                        ParsedSceneData(title: s.title, lines: s.lines.map {
+                            ParsedLineData(character: $0.character, text: $0.text, cueType: $0.cueType)
+                        })
+                    },
+                    detectedCharacters: result.detectedCharacters
+                )
+            } else {
+                let result = PlainTextParser().parse(text: text)
+                parsedResult = ImportParseResult(
+                    fileName: fileName,
+                    format: .plainText,
+                    scenes: result.scenes.map { s in
+                        ParsedSceneData(title: s.title, lines: s.lines.map {
+                            ParsedLineData(character: $0.character, text: $0.text, cueType: $0.cueType)
+                        })
+                    },
+                    detectedCharacters: result.detectedCharacters
+                )
             }
+
+            if parsedResult?.detectedCharacters.isEmpty == true {
+                parseError = "No characters detected. Make sure character names are in ALL CAPS."
+                parsedResult = nil
+            }
+        } catch {
+            parseError = "Could not read file: \(error.localizedDescription)"
         }
     }
 }

@@ -1,6 +1,10 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var sharedFileURL: URL?
+    @State private var showExternalImport = false
+    @Environment(\.modelContext) private var modelContext
+
     var body: some View {
         TabView {
             ScriptLibraryView()
@@ -12,6 +16,13 @@ struct ContentView: View {
                 .tabItem {
                     Label("Practice", systemImage: "play.circle.fill")
                 }
+        }
+        .onOpenURL { url in
+            sharedFileURL = url
+            showExternalImport = true
+        }
+        .sheet(isPresented: $showExternalImport) {
+            ImportView(initialURL: sharedFileURL)
         }
     }
 }
