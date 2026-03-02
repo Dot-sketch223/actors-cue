@@ -8,18 +8,33 @@ struct ActorsCueApp: App {
 
     init() {
         let schema = Schema([Script.self, ScriptScene.self, Line.self, RunSession.self])
+        container = Self.makeContainer(schema: schema)
+    }
+
+    private static func makeContainer(schema: Schema) -> ModelContainer {
         let cloudConfig = ModelConfiguration(
             schema: schema,
             cloudKitDatabase: .private("iCloud.com.actorscue.app")
         )
-        if let cloudContainer = try? ModelContainer(for: schema, configurations: cloudConfig) {
-            container = cloudContainer
-        } else {
-            // CloudKit unavailable (container not provisioned, no entitlement, or simulator).
-            // Fall back to a local-only store so the app remains functional.
-            let localConfig = ModelConfiguration(schema: schema)
-            container = try! ModelContainer(for: schema, configurations: localConfig)
+        if let c = try? ModelContainer(for: schema, configurations: cloudConfig) {
+            return c
         }
+
+        // CloudKit unavailable — fall back to a local store.
+        let localConfig = ModelConfiguration(schema: schema)
+        if let c = try? ModelContainer(for: schema, configurations: localConfig) {
+            return c
+        }
+
+        // Local store is also unreadable (e.g. incompatible store left over from
+        // a previous CloudKit configuration). Delete the on-disk files and retry.
+        // This only runs when the store is already unreadable, so no good data is lost.
+        let storeURL = localConfig.url
+        let fm = FileManager.default
+        for suffix in ["", "-wal", "-shm"] {
+            try? fm.removeItem(atPath: storeURL.path + suffix)
+        }
+        return try! ModelContainer(for: schema, configurations: ModelConfiguration(schema: schema))
     }
 
     var body: some Scene {
