@@ -8,14 +8,17 @@ struct ActorsCueApp: App {
 
     init() {
         let schema = Schema([Script.self, ScriptScene.self, Line.self, RunSession.self])
-        let config = ModelConfiguration(
+        let cloudConfig = ModelConfiguration(
             schema: schema,
             cloudKitDatabase: .private("iCloud.com.actorscue.app")
         )
-        do {
-            container = try ModelContainer(for: schema, configurations: config)
-        } catch {
-            fatalError("Failed to create ModelContainer: \(error)")
+        if let cloudContainer = try? ModelContainer(for: schema, configurations: cloudConfig) {
+            container = cloudContainer
+        } else {
+            // CloudKit unavailable (container not provisioned, no entitlement, or simulator).
+            // Fall back to a local-only store so the app remains functional.
+            let localConfig = ModelConfiguration(schema: schema)
+            container = try! ModelContainer(for: schema, configurations: localConfig)
         }
     }
 
