@@ -55,6 +55,8 @@ targets:
         UISupportedInterfaceOrientations:
           - UIInterfaceOrientationPortrait
         UILaunchScreen: {}
+        LSSupportsOpeningDocumentsInPlace: false
+        UISupportsDocumentBrowser: false
         NSSpeechRecognitionUsageDescription: "Actor's Cue uses speech recognition to detect when you've finished speaking your line, so the script can auto-advance."
         NSMicrophoneUsageDescription: "Actor's Cue listens for your voice so it knows when you've delivered your line."
         CFBundleDocumentTypes:
