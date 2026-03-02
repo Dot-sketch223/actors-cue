@@ -61,6 +61,8 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>LSSupportsOpeningDocumentsInPlace</key>
+	<false/>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Actor's Cue listens for your voice so it knows when you've delivered your line.</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
@@ -73,6 +75,8 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+	<key>UISupportsDocumentBrowser</key>
+	<false/>
 	<key>UTImportedTypeDeclarations</key>
 	<array>
 		<dict>
