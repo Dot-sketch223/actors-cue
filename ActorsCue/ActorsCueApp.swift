@@ -20,8 +20,10 @@ struct ActorsCueApp: App {
             return c
         }
 
-        // CloudKit unavailable — fall back to a local store.
-        let localConfig = ModelConfiguration(schema: schema)
+        // CloudKit unavailable — fall back to a strictly local store.
+        // Must pass cloudKitDatabase: .none explicitly; the default (.automatic)
+        // re-detects the CloudKit entitlement and fails the same way.
+        let localConfig = ModelConfiguration(schema: schema, cloudKitDatabase: .none)
         if let c = try? ModelContainer(for: schema, configurations: localConfig) {
             return c
         }
@@ -34,7 +36,10 @@ struct ActorsCueApp: App {
         for suffix in ["", "-wal", "-shm"] {
             try? fm.removeItem(atPath: storeURL.path + suffix)
         }
-        return try! ModelContainer(for: schema, configurations: ModelConfiguration(schema: schema))
+        return try! ModelContainer(
+            for: schema,
+            configurations: ModelConfiguration(schema: schema, cloudKitDatabase: .none)
+        )
     }
 
     var body: some Scene {
