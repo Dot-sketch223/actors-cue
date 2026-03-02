@@ -63,14 +63,20 @@ struct ImportView: View {
             }
             .fileImporter(
                 isPresented: $showingFilePicker,
-                allowedContentTypes: [.plainText, .pdf, UTType(filenameExtension: "fountain") ?? .text],
+                allowedContentTypes: [
+                    .plainText,
+                    .pdf,
+                    UTType("com.actorscue.fountain") ?? UTType(filenameExtension: "fountain") ?? .text
+                ],
                 allowsMultipleSelection: false
             ) { result in
                 handleFileImport(result)
             }
             .onAppear {
                 if let url = initialURL {
+                    let secured = url.startAccessingSecurityScopedResource()
                     processURL(url)
+                    if secured { url.stopAccessingSecurityScopedResource() }
                 }
             }
             .navigationDestination(item: $parsedResult) { result in
