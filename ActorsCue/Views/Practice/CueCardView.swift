@@ -8,6 +8,8 @@ struct CueCardView: View {
     let onForgotIt: () -> Void
     let onAdvance: () -> Void
 
+    @State private var forgotRevealed = false
+
     var body: some View {
         VStack(spacing: 0) {
             // Cue context
@@ -34,7 +36,7 @@ struct CueCardView: View {
                     .font(.caption.uppercaseSmallCaps())
                     .foregroundStyle(.tint)
 
-                if trainingWheels {
+                if trainingWheels || forgotRevealed {
                     Text(userLine.text)
                         .font(.title3)
                         .fontWeight(.medium)
@@ -62,18 +64,21 @@ struct CueCardView: View {
 
             // Action buttons
             HStack(spacing: 16) {
-                Button(role: .destructive) {
-                    onForgotIt()
-                } label: {
-                    Label("Forgot It", systemImage: "exclamationmark.bubble")
-                        .frame(maxWidth: .infinity)
+                if !forgotRevealed {
+                    Button(role: .destructive) {
+                        forgotRevealed = true
+                        onForgotIt()
+                    } label: {
+                        Label("Forgot It", systemImage: "exclamationmark.bubble")
+                            .frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(.bordered)
                 }
-                .buttonStyle(.bordered)
 
                 Button {
                     onAdvance()
                 } label: {
-                    Label("Done", systemImage: "checkmark")
+                    Label(forgotRevealed ? "Continue" : "Done", systemImage: forgotRevealed ? "chevron.forward" : "checkmark")
                         .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.borderedProminent)

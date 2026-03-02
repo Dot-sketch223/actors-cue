@@ -112,12 +112,12 @@ struct RunView: View {
                             isListening: speechService.isListening,
                             onForgotIt: {
                                 stumbedLineIDs.append(line.id)
-                                advance()
                             },
                             onAdvance: {
                                 advance()
                             }
                         )
+                        .id(line.id)
                     }
                     .transition(.move(edge: .bottom).combined(with: .opacity))
                     .animation(.spring(), value: isUserLine)
