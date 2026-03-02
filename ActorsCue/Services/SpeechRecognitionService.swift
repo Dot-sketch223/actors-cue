@@ -16,6 +16,8 @@ final class SpeechRecognitionService {
     private var audioEngine = AVAudioEngine()
     private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
     private var recognitionTask: SFSpeechRecognitionTask?
+    /// Prevents the recognition callback from firing `onSpeechDetected` more than once per listening session.
+    private var hasDetectedSpeech = false
 
     var onSpeechDetected: (() -> Void)?
 
@@ -60,6 +62,7 @@ final class SpeechRecognitionService {
             self?.recognitionRequest?.append(buffer)
         }
 
+        hasDetectedSpeech = false
         audioEngine.prepare()
         try audioEngine.start()
         isListening = true
@@ -67,10 +70,17 @@ final class SpeechRecognitionService {
         recognitionTask = recognizer.recognitionTask(with: recognitionRequest) { [weak self] result, error in
             guard let self else { return }
             if let result, !result.bestTranscription.formattedString.isEmpty {
-                self.onSpeechDetected?()
+                // Dispatch to main thread and guard against multiple partial-result firings.
+                DispatchQueue.main.async { [weak self] in
+                    guard let self, !self.hasDetectedSpeech else { return }
+                    self.hasDetectedSpeech = true
+                    self.onSpeechDetected?()
+                }
             }
             if error != nil || (result?.isFinal == true) {
-                self.stopListening()
+                DispatchQueue.main.async { [weak self] in
+                    self?.stopListening()
+                }
             }
         }
     }

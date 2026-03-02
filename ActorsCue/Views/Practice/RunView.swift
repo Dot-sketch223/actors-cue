@@ -141,6 +141,11 @@ struct RunView: View {
                 speechService.stopListening()
             }
         }
+        .onChange(of: speechService.authStatus) { _, newStatus in
+            if newStatus == .authorized && isUserLine {
+                startSpeechIfNeeded()
+            }
+        }
     }
 
     private func advance() {
