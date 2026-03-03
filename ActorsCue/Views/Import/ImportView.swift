@@ -109,25 +109,62 @@ struct ImportView: View {
         let ext = url.pathExtension.lowercased()
         let fileName = url.deletingPathExtension().lastPathComponent
 
-        let text: String
         if ext == "pdf" {
-            guard let extracted = extractPDFText(from: url) else {
-                parseError = "Could not extract text from PDF."
-                return
-            }
-            text = extracted
-        } else {
-            do {
-                text = try String(contentsOf: url, encoding: .utf8)
-            } catch {
-                parseError = "Could not read file: \(error.localizedDescription)"
-                return
-            }
+            processPDF(url: url, fileName: fileName)
+            return
         }
 
-        let format: ScriptFormat = (ext == "fountain" || (ext == "pdf" && looksLikeFountain(text)))
-            ? .fountain : .plainText
+        let text: String
+        do {
+            text = try String(contentsOf: url, encoding: .utf8)
+        } catch {
+            parseError = "Could not read file: \(error.localizedDescription)"
+            return
+        }
 
+        let format: ScriptFormat = (ext == "fountain" || looksLikeFountain(text)) ? .fountain : .plainText
+        applyParser(text: text, fileName: fileName, format: format)
+    }
+
+    // MARK: - PDF Path
+
+    private func processPDF(url: URL, fileName: String) {
+        guard let document = PDFDocument(url: url) else {
+            parseError = "Could not open PDF."
+            return
+        }
+
+        // Try position-aware screenplay parser. Returns nil when there is no text layer.
+        guard let pdfResult = PDFScreenplayParser().parse(document: document) else {
+            parseError = "This PDF has no text layer. Please use a PDF with selectable text."
+            return
+        }
+
+        if !pdfResult.detectedCharacters.isEmpty {
+            // Successfully parsed as a structured screenplay.
+            parsedResult = ImportParseResult(
+                fileName: fileName,
+                format: .fountain,
+                scenes: pdfResult.scenes.map { s in
+                    ParsedSceneData(title: s.title, lines: s.lines.map {
+                        ParsedLineData(character: $0.character, text: $0.text, cueType: $0.cueType)
+                    })
+                },
+                detectedCharacters: pdfResult.detectedCharacters
+            )
+            return
+        }
+
+        // Fallback: the PDF has a text layer but does not look like a formatted screenplay
+        // (e.g. a plain-text or Fountain script saved as PDF). Extract text and try again.
+        let text = document.string ?? ""
+        let format: ScriptFormat = looksLikeFountain(text) ? .fountain : .plainText
+        applyParser(text: text, fileName: fileName, format: format)
+    }
+
+    // MARK: - Text-based Parsing
+
+    private func applyParser(text: String, fileName: String, format: ScriptFormat) {
         if format == .fountain {
             let result = FountainParser().parse(text: text)
             parsedResult = ImportParseResult(
@@ -158,11 +195,6 @@ struct ImportView: View {
             parseError = "No characters detected. Make sure character names are in ALL CAPS."
             parsedResult = nil
         }
-    }
-
-    private func extractPDFText(from url: URL) -> String? {
-        guard let document = PDFDocument(url: url) else { return nil }
-        return document.string
     }
 
     /// Returns true if the text looks like a Fountain screenplay

@@ -14,8 +14,10 @@
 		2E94B0DC55F118D76109F2C3 /* PlainTextParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B5165B196F48DD4D1E6CC1 /* PlainTextParser.swift */; };
 		3156154D690F78AE228CB954 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34EAC7967D7832EEFA45D9FA /* ContentView.swift */; };
 		33AF1FA2E0519D433CB412DC /* RunSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91394C15E80314E94B700E6A /* RunSummaryView.swift */; };
+		4EDFAC8CC863D2E402630A20 /* PDFScreenplayParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF5870E26580FDB5572F205 /* PDFScreenplayParser.swift */; };
 		54205CB5C42B75DFD610514D /* FountainParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC16C250A144EC1A5AE1212 /* FountainParser.swift */; };
 		5B59162B7042E11DC8343AD4 /* ScriptScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 299C0DDE395F9DB3B9EA521F /* ScriptScene.swift */; };
+		5C7BAFA49AC968F4F46FA5CA /* PDFScreenplayParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7469846BD724AECD42F33618 /* PDFScreenplayParserTests.swift */; };
 		5E389794A4F8F635E16DE678 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B3A5542AFB5E96B3036790 /* SplashView.swift */; };
 		60664CE17008EBA14B3623CC /* ModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74180D720DB734A22776A05 /* ModelTests.swift */; };
 		60B90FF1F8151C0C631B1993 /* SpeechRecognitionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C1DDFC0131F99DB3EA87DD /* SpeechRecognitionService.swift */; };
@@ -55,6 +57,7 @@
 		4A3D7E242BDF5D90CC04B8E5 /* ActorsCue.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = ActorsCue.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		687A14D92FC00B12B91B8AD9 /* Line.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Line.swift; sourceTree = "<group>"; };
 		705BD40CC19306DCF0184453 /* ImportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportView.swift; sourceTree = "<group>"; };
+		7469846BD724AECD42F33618 /* PDFScreenplayParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFScreenplayParserTests.swift; sourceTree = "<group>"; };
 		7A281B1C096E6D42139ACA3F /* PlainTextParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlainTextParserTests.swift; sourceTree = "<group>"; };
 		91394C15E80314E94B700E6A /* RunSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunSummaryView.swift; sourceTree = "<group>"; };
 		99EBFD80A0CF3B4A65BC4D0A /* CharacterReviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterReviewView.swift; sourceTree = "<group>"; };
@@ -71,6 +74,7 @@
 		E6EC4C69768B59670CEC61A3 /* RunView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunView.swift; sourceTree = "<group>"; };
 		E74180D720DB734A22776A05 /* ModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelTests.swift; sourceTree = "<group>"; };
 		E7C1DDFC0131F99DB3EA87DD /* SpeechRecognitionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechRecognitionService.swift; sourceTree = "<group>"; };
+		ECF5870E26580FDB5572F205 /* PDFScreenplayParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFScreenplayParser.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -86,6 +90,7 @@
 			isa = PBXGroup;
 			children = (
 				CEC16C250A144EC1A5AE1212 /* FountainParser.swift */,
+				ECF5870E26580FDB5572F205 /* PDFScreenplayParser.swift */,
 				A7B5165B196F48DD4D1E6CC1 /* PlainTextParser.swift */,
 			);
 			path = Parsing;
@@ -175,6 +180,7 @@
 			children = (
 				9FBAA60340EEDFD4C6609195 /* FountainParserTests.swift */,
 				E74180D720DB734A22776A05 /* ModelTests.swift */,
+				7469846BD724AECD42F33618 /* PDFScreenplayParserTests.swift */,
 				7A281B1C096E6D42139ACA3F /* PlainTextParserTests.swift */,
 			);
 			path = ActorsCueTests;
@@ -298,6 +304,7 @@
 			files = (
 				EF04FEB19588686FC88EA0E2 /* FountainParserTests.swift in Sources */,
 				60664CE17008EBA14B3623CC /* ModelTests.swift in Sources */,
+				5C7BAFA49AC968F4F46FA5CA /* PDFScreenplayParserTests.swift in Sources */,
 				70503D246A019A3F38600FB1 /* PlainTextParserTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -315,6 +322,7 @@
 				54205CB5C42B75DFD610514D /* FountainParser.swift in Sources */,
 				B563CADBD42CE8952DD4ABC4 /* ImportView.swift in Sources */,
 				D0280B86A73161DF168D47DD /* Line.swift in Sources */,
+				4EDFAC8CC863D2E402630A20 /* PDFScreenplayParser.swift in Sources */,
 				2E94B0DC55F118D76109F2C3 /* PlainTextParser.swift in Sources */,
 				F04CAC0CC0CFF1F963FC8358 /* PracticeSetupView.swift in Sources */,
 				02104BFB4F01C8B07CBF8BE7 /* RunSession.swift in Sources */,
@@ -369,6 +377,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -515,6 +524,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
