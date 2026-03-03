@@ -106,10 +106,13 @@ struct PDFScreenplayParser {
                         currentLines.append(ParsedLine(character: char, text: cleaned, cueType: .direction))
                     }
                 } else if cleaned == cleaned.uppercased() && cleaned.contains(where: { $0.isLetter }) {
-                    // ALL-CAPS line → character name.
-                    flushDialogue()
-                    currentCharacter = normalizeCharacterName(cleaned)
-                    dialogueParts = []   // discard any orphaned dialogue from before
+                    // ALL-CAPS line → character name (if long enough after normalisation).
+                    let normalized = normalizeCharacterName(cleaned)
+                    if normalized.filter({ $0.isLetter }).count >= 2 {
+                        flushDialogue()
+                        currentCharacter = normalized
+                        dialogueParts = []   // discard any orphaned dialogue from before
+                    }
                 }
                 // Non-caps, non-paren text in the character zone is treated as noise and ignored.
 
@@ -141,8 +144,13 @@ struct PDFScreenplayParser {
             scenes.append(ParsedScene(title: currentSceneTitle, lines: currentLines))
         }
 
-        let characters = Array(Set(spokenLines.map(\.character)).filter { !$0.isEmpty }).sorted()
-        return ParseResult(scenes: scenes, detectedCharacters: characters)
+        // Deduplicate: discard any name that is a strict prefix of a longer name
+        // (these are reconstruction fragments, e.g. "PA" when "PAUL" also exists).
+        var chars = Array(Set(spokenLines.map(\.character)).filter { !$0.isEmpty })
+        chars = chars.filter { name in
+            !chars.contains { other in other.count > name.count && other.hasPrefix(name) }
+        }
+        return ParseResult(scenes: scenes, detectedCharacters: chars.sorted())
     }
 
     // MARK: - Threshold Detection
@@ -175,53 +183,46 @@ struct PDFScreenplayParser {
         let nsString = pageString as NSString
         let length = nsString.length
 
-        struct CharPoint { let char: Character; let x: CGFloat; let y: CGFloat }
-        var points: [CharPoint] = []
-        var lastY: CGFloat = 0
-        var lastMaxX: CGFloat = 0
+        // Split page.string by newlines. Each newline-delimited segment is a text object
+        // from the PDF content stream whose characters are already in correct reading order.
+        // We use characterBounds only to find each segment's visual y-position (for
+        // top-to-bottom ordering) and its leftmost x (for column classification).
+        // We do NOT re-sort individual characters by x — that caused garbled output
+        // when character bounding boxes were clustered at identical x values.
+        struct Segment { let text: String; let minX: CGFloat; let y: CGFloat }
+        var segments: [Segment] = []
+        var segStart = 0
+
+        func processRange(_ start: Int, _ end: Int) {
+            guard end > start else { return }
+            let raw = nsString.substring(with: NSRange(location: start, length: end - start))
+            let trimmed = raw.trimmingCharacters(in: .whitespaces)
+            guard !trimmed.isEmpty else { return }
+
+            var firstY: CGFloat = -1
+            var minX: CGFloat = .greatestFiniteMagnitude
+            for j in start..<end {
+                let b = page.characterBounds(at: j)
+                guard b.width > 0.5 && b.height > 0.5 else { continue }
+                if firstY < 0 { firstY = b.midY }
+                minX = min(minX, b.minX)
+            }
+            guard firstY > 0, minX < .greatestFiniteMagnitude else { return }
+            segments.append(Segment(text: trimmed, minX: minX, y: firstY))
+        }
 
         for i in 0..<length {
-            let charStr = nsString.substring(with: NSRange(location: i, length: 1))
-            guard let ch = charStr.first else { continue }
-            guard ch != "\n", ch != "\r" else {
-                lastMaxX = 0
-                continue
-            }
-
-            let bounds = page.characterBounds(at: i)
-            if bounds.width > 0.5 && bounds.height > 0.5 {
-                lastY = bounds.midY
-                lastMaxX = bounds.maxX
-                points.append(CharPoint(char: ch, x: bounds.minX, y: lastY))
-            } else if ch == " " && lastY > 0 {
-                // Spaces often have zero-width bounds; position them after the previous glyph.
-                points.append(CharPoint(char: ch, x: lastMaxX + 0.5, y: lastY))
-                lastMaxX += 4   // approximate space advance
+            let ch = nsString.character(at: i)
+            if ch == 10 || ch == 13 {   // \n or \r
+                processRange(segStart, i)
+                segStart = i + 1
             }
         }
+        processRange(segStart, length)
 
-        // Sort top-to-bottom (PDF y-axis: 0 at bottom, so higher y = higher on page).
-        let sorted = points.sorted { $0.y > $1.y }
-
-        // Group characters into visual lines by y-coordinate (±3 pt tolerance).
-        struct LineGroup { var y: CGFloat; var chars: [(x: CGFloat, char: Character)] }
-        var lineGroups: [LineGroup] = []
-        for pt in sorted {
-            if !lineGroups.isEmpty && abs(lineGroups[lineGroups.count - 1].y - pt.y) <= 3 {
-                lineGroups[lineGroups.count - 1].chars.append((pt.x, pt.char))
-            } else {
-                lineGroups.append(LineGroup(y: pt.y, chars: [(pt.x, pt.char)]))
-            }
-        }
-
-        return lineGroups.compactMap { group in
-            let sortedChars = group.chars.sorted { $0.x < $1.x }
-            let text = String(sortedChars.map { $0.char })
-            // minX is the leftmost non-space character (used for column classification).
-            let minX = sortedChars.filter { $0.char != " " }.min(by: { $0.x < $1.x })?.x
-            guard let minX else { return nil }
-            return SpatialLine(text: text, minX: minX)
-        }
+        // Sort top-to-bottom: higher y = higher on page in PDF coordinates.
+        segments.sort { $0.y > $1.y }
+        return segments.map { SpatialLine(text: $0.text, minX: $0.minX) }
     }
 
     // MARK: - Helpers
@@ -233,10 +234,17 @@ struct PDFScreenplayParser {
             #"\s*\(O\.S\.\)"#,
             #"\s*\(V\.O\.\)"#,
             #"\s*\(O\.C\.\)"#,
+            #"\s*\([^)]*$"#,    // unclosed parenthetical (closing ) split to another segment)
         ]
         var result = name
         for pattern in patterns {
             result = result.replacingOccurrences(of: pattern, with: "", options: .regularExpression)
+        }
+        result = result.trimmingCharacters(in: .whitespaces)
+        // Strip leading non-letter characters (stray periods, asterisks, colons that
+        // ended up spatially grouped with the character name from an adjacent PDF element).
+        if let firstLetter = result.firstIndex(where: { $0.isLetter }) {
+            result = String(result[firstLetter...])
         }
         return result.trimmingCharacters(in: .whitespaces)
     }

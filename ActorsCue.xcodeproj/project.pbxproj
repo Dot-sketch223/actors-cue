@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 77;
+	objectVersion = 63;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -54,7 +54,7 @@
 		321D168ACA4644D008B9BC07 /* ActorsCue.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ActorsCue.entitlements; sourceTree = "<group>"; };
 		34EAC7967D7832EEFA45D9FA /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		3E5DCA05F8A724B9347FE5FE /* Script.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Script.swift; sourceTree = "<group>"; };
-		4A3D7E242BDF5D90CC04B8E5 /* ActorsCue.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = ActorsCue.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4A3D7E242BDF5D90CC04B8E5 /* ActorsCue.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ActorsCue.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		687A14D92FC00B12B91B8AD9 /* Line.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Line.swift; sourceTree = "<group>"; };
 		705BD40CC19306DCF0184453 /* ImportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportView.swift; sourceTree = "<group>"; };
 		7469846BD724AECD42F33618 /* PDFScreenplayParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFScreenplayParserTests.swift; sourceTree = "<group>"; };
@@ -258,7 +258,6 @@
 				LastUpgradeCheck = 1600;
 				TargetAttributes = {
 					1CBDB832618C0FEB7D2A54CA = {
-						DevelopmentTeam = K4V29C2452;
 						ProvisioningStyle = Automatic;
 					};
 					8EF170B58189894FD8B71955 = {
@@ -276,7 +275,6 @@
 			);
 			mainGroup = B7EBFC88613BA003BF4C0A76;
 			minimizedProjectReferenceProxies = 1;
-			preferredProjectObjectVersion = 77;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -357,6 +355,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 7R38MMVD32;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = ActorsCue/Resources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
@@ -547,6 +546,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 7R38MMVD32;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = ActorsCue/Resources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;

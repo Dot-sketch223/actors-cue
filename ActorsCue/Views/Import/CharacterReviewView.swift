@@ -31,20 +31,23 @@ struct CharacterReviewView: View {
                     HStack {
                         TextField("Character name", text: $name)
                         Spacer()
-                        if selectedRoles.contains(name) {
-                            Image(systemName: "person.fill")
-                                .foregroundStyle(.tint)
+                        Button {
+                            toggleRole(name)
+                        } label: {
+                            Image(systemName: selectedRoles.contains(name)
+                                  ? "person.fill"
+                                  : "person.badge.plus")
+                                .foregroundStyle(selectedRoles.contains(name)
+                                                 ? Color.accentColor : Color.secondary)
+                                .imageScale(.large)
                         }
-                    }
-                    .contentShape(Rectangle())
-                    .onTapGesture {
-                        toggleRole(name)
+                        .buttonStyle(.plain)
                     }
                 }
             } header: {
                 Text("Characters")
             } footer: {
-                Text("Tap a character to mark it as your role. You can play multiple parts.")
+                Text("Tap \(Image(systemName: "person.badge.plus")) to mark a character as your role. You can play multiple parts.")
             }
 
             Section("Your Role(s)") {
@@ -80,6 +83,7 @@ struct CharacterReviewView: View {
                 Text("\(allLines.count) lines total")
             }
         }
+        .scrollDismissesKeyboard(.immediately)
         .navigationTitle("Review Characters")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -89,6 +93,15 @@ struct CharacterReviewView: View {
                 }
                 .disabled(scriptTitle.trimmingCharacters(in: .whitespaces).isEmpty)
                 .fontWeight(.semibold)
+            }
+            ToolbarItemGroup(placement: .keyboard) {
+                Spacer()
+                Button("Done") {
+                    UIApplication.shared.sendAction(
+                        #selector(UIResponder.resignFirstResponder),
+                        to: nil, from: nil, for: nil
+                    )
+                }
             }
         }
     }
