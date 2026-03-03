@@ -88,10 +88,11 @@ targets:
       path: ActorsCue/ActorsCue.entitlements
       properties:
         com.apple.developer.speechrecognition: true
-        com.apple.developer.icloud-services:
-          - CloudKit
-        com.apple.developer.icloud-container-identifiers:
-          - iCloud.com.actorscue.app
+        # iCloud entitlements re-enable when US-15 (CloudKit provisioning) is complete
+        # com.apple.developer.icloud-services:
+        #   - CloudKit
+        # com.apple.developer.icloud-container-identifiers:
+        #   - iCloud.com.actorscue.app
     settings:
       base:
         PRODUCT_NAME: ActorsCue
