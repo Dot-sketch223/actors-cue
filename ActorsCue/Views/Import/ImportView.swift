@@ -114,13 +114,17 @@ struct ImportView: View {
             return
         }
 
-        let text: String
+        var text: String
         do {
             text = try String(contentsOf: url, encoding: .utf8)
         } catch {
             parseError = "Could not read file: \(error.localizedDescription)"
             return
         }
+
+        // Normalize CRLF/CR to LF so parsers don't see phantom blank lines
+        text = text.replacingOccurrences(of: "\r\n", with: "\n")
+                   .replacingOccurrences(of: "\r", with: "\n")
 
         let format: ScriptFormat = (ext == "fountain" || looksLikeFountain(text)) ? .fountain : .plainText
         applyParser(text: text, fileName: fileName, format: format)
