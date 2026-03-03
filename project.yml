@@ -87,7 +87,6 @@ targets:
     entitlements:
       path: ActorsCue/ActorsCue.entitlements
       properties:
-        com.apple.developer.speechrecognition: true
         # iCloud entitlements re-enable when US-15 (CloudKit provisioning) is complete
         # com.apple.developer.icloud-services:
         #   - CloudKit
